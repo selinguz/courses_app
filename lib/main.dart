@@ -31,7 +31,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  //final String docName= ' ';
+  static const appBarColor = Color(0xFF006d77);
+  static const scaffoldColor = Color(0xfFedf6f9);
+
   CollectionReference courses =
       FirebaseFirestore.instance.collection('courses');
 
@@ -40,39 +42,52 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.orange[100],
+          backgroundColor: scaffoldColor,
           appBar: AppBar(
+            backgroundColor: appBarColor,
             toolbarHeight: 90.0,
-            title: Text('Eğitimlerim'),
+            title: Text('Eğitimlerim',style: TextStyle(color: Colors.white),),
           ),
-          body: Column(
-            children: [
-              StreamBuilder<QuerySnapshot>(
-                stream: courses.snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) => new Divider(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          tileColor: Colors.amber,
-                          leading: const Icon(
-                            Icons.list_rounded,
-                          ),
-                          title: Text(snapshot.data!.docs[index]['name']),
-                          subtitle:
-                              Text(snapshot.data!.docs[index]['deadline']),
+          body: Padding(
+            padding: const EdgeInsets.only(top:12.0,left:12.0,right: 12.0),
+            child: ColoredBox(
+              color: Color(0xFFedf6f9),
+              child: Column(
+                children: [
+                  StreamBuilder<QuerySnapshot>(
+                    stream: courses.snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) => const Divider(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              color: Color(0xFF83c5be),
+                              shape: RoundedRectangleBorder(borderRadius: 
+                              BorderRadius.circular(12.0)),
+                              child: ListTile(
+                                //tileColor: Color(0xFFDCB6D5),
+                                leading: const Icon(
+                                  Icons.list_rounded,
+                                ),
+                                title: Text(snapshot.data!.docs[index]['name']),
+                                subtitle:
+                                    Text(snapshot.data!.docs[index]['deadline']),
+                                trailing: Icon(Icons.more_vert),
+                              ),
+                            );
+                          },
                         );
-                      },
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
