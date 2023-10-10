@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:egitimlerim/widgets/my_course_stream.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +31,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+  //final String docName= ' ';
+  CollectionReference courses =
+      FirebaseFirestore.instance.collection('courses');
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,14 +45,34 @@ class _MyAppState extends State<MyApp> {
             toolbarHeight: 90.0,
             title: Text('Eğitimlerim'),
           ),
-          body: Container(
-            child: SizedBox(
-              child: Column(
-                children: [
-                  MyCourseStream(docName: 'BSODVA7kFnKqTKcaRHM1'),
-                ],
+          body: Column(
+            children: [
+              StreamBuilder<QuerySnapshot>(
+                stream: courses.snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) => new Divider(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          tileColor: Colors.amber,
+                          leading: const Icon(
+                            Icons.list_rounded,
+                          ),
+                          title: Text(snapshot.data!.docs[index]['name']),
+                          subtitle:
+                              Text(snapshot.data!.docs[index]['deadline']),
+                        );
+                      },
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
               ),
-            ),
+            ],
           ),
         ),
       ),

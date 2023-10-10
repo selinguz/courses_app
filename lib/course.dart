@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 class Course {
   final String? id;
@@ -6,10 +6,5 @@ class Course {
   final String deadline;
   final String source;
 
-  Course(
-      {required this.id,
-      required this.name,
-      required this.deadline,
-      required this.source});
-
+  Course(this.id, this.name, this.deadline, this.source);
 }

@@ -24,9 +24,9 @@ class _CoursesPageState extends State<CoursesPage> {
           title: Text('Eğitimlerim'),
         ),
         body: Container(
-            child: MyCourseStream(docName: 'BSODVA7kFnKqTKcaRHM1'),),
+            //child: MyCourseStream(docName: 'BSODVA7kFnKqTKcaRHM1'),),
       ),
-    );
+    ),);
   }
 }
 
