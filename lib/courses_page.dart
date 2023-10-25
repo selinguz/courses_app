@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:egitimlerim/widgets/my_course_stream.dart';
+
 import 'package:flutter/material.dart';
 
 class CoursesPage extends StatefulWidget {
@@ -21,7 +20,7 @@ class _CoursesPageState extends State<CoursesPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Eğitimlerim'),
+          title: const Text('Eğitimlerim'),
         ),
         body: Container(
             //child: MyCourseStream(docName: 'BSODVA7kFnKqTKcaRHM1'),),
