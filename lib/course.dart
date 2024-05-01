@@ -1,23 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-
-DatabaseReference ref = FirebaseDatabase.instance.ref("courses");
 
 class Course {
-  final String id;
-  final String name;
+/*  final String name;
   final String deadline;
-  final String source;
+  final String source;*/
 
-  Course(
-      {required this.id,
-      required this.name,
-      required this.deadline,
-      required this.source});
+  _Course() {
+    throw UnimplementedError();
+  }
 
-  void addCourse() {
-    FirebaseFirestore.instance
-        .collection('courses')
-        .add({"name": name, "id": id, "deadline": deadline, "source": source});
+  static Future<void> addCourse(
+      {required String name,
+      required String deadline,
+      required String source}) async {
+    await FirebaseFirestore.instance
+        .collection("courses")
+        .add({'name': name, "deadline": deadline, "source": source});
+  }
+
+  static Future<void> deleteCourse(String collection, String documentId) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      await firestore.collection(collection).doc(documentId).delete();
+      print('Belge başarıyla silindi.');
+    } catch (e) {
+      print('Belge silinirken hata oluştu: $e');
+    }
   }
 }

@@ -11,7 +11,6 @@ class AddCoursePage extends StatefulWidget {
 }
 
 class _AddCoursePageState extends State<AddCoursePage> {
-  final courseNumController = TextEditingController();
   final courseNameController = TextEditingController();
   final courseTimeController = TextEditingController();
   final courseSourceController = TextEditingController();
@@ -20,16 +19,6 @@ class _AddCoursePageState extends State<AddCoursePage> {
     content: Text('Tüm alanlar doldurulmalı'),
     duration: Duration(seconds: 2),
   );
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    courseNumController.dispose();
-    courseNameController.dispose();
-    courseTimeController.dispose();
-    courseSourceController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +37,9 @@ class _AddCoursePageState extends State<AddCoursePage> {
           child: Column(
             children: [
               CourseTextField(
-                controller: courseNumController,
-                hintText: "Eğitim No",
-              ),
-              CourseTextField(
                 controller: courseNameController,
                 hintText: "Eğitim Adı",
               ),
-
               CourseTextField(
                 controller: courseTimeController,
                 hintText: "Bitirme Süresi",
@@ -79,18 +63,16 @@ class _AddCoursePageState extends State<AddCoursePage> {
                         ),
                       ),
                       onPressed: () {
-                        Course course = Course(
-                            id: courseNumController.text,
-                            name: courseNameController.text,
-                            deadline: courseTimeController.text,
-                            source: courseSourceController.text);
-                        if (courseNumController.text == "" ||
-                            courseNameController.text == "" ||
+                        if (courseNameController.text == "" ||
                             courseTimeController.text == "" ||
                             courseSourceController.text == "") {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } else {
-                          course.addCourse();
+                          Course.addCourse(
+                              name: courseNameController.text,
+                              deadline: courseTimeController.text,
+                              source: courseSourceController.text);
+                          Navigator.of(context).pop();
                         }
                       },
                       child: const Text(
